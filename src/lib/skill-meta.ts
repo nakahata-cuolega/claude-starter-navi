@@ -5,7 +5,6 @@ export const SKILL_CATEGORIES: Record<string, string> = {
   "new-project": "つくる",
   "gen-image": "画像",
   "gen-ogp": "画像",
-  "gen-banner": "広告",
   "ad-copy": "広告",
   analyze: "分析",
   ship: "運用",
