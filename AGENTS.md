@@ -8,6 +8,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Claude Code のセットアップとスキル導入をナビゲートする日本語の静的サイト。
 
+- Live URL: https://claude-starter-navi.onrender.com (Render Static Site, push で自動デプロイ)
+
 - 技術: Next.js (App Router, `output: "export"` で静的エクスポート) + TypeScript + Tailwind CSS v4
 - スキルカタログ(/skills)は **ビルド時に** GitHub の公開リポジトリ
   `nakahata-cuolega/claude-starter` から SKILL.md を取得して生成する(`src/lib/skills.ts`)。
