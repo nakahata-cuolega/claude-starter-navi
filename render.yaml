@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: claude-starter-navi
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./out
+    pullRequestPreviewsEnabled: false
