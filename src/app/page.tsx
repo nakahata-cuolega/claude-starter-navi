@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getSkills } from "@/lib/skills";
 
@@ -24,31 +25,41 @@ export default async function Home() {
 
   return (
     <div className="space-y-16">
-      <section className="pt-8 text-center">
-        <h1 className="text-3xl font-bold leading-snug sm:text-4xl">
-          Claude Code を、
-          <br className="sm:hidden" />
-          <span className="text-orange-600 dark:text-orange-400">今日から使いこなす</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-xl leading-relaxed text-zinc-600 dark:text-zinc-300">
-          AIコーディングエージェント「Claude Code」のインストールから、
-          実戦で使えるスキルの導入までをステップバイステップでナビゲートします。
-          ターミナルに慣れていなくても大丈夫。
-        </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link
-            href="/setup/"
-            className="rounded-xl bg-orange-600 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-orange-500"
-          >
-            セットアップを始める →
-          </Link>
-          <Link
-            href="/skills/"
-            className="rounded-xl border border-zinc-300 bg-white px-6 py-3 font-bold text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-          >
-            スキルを見る
-          </Link>
+      <section className="grid items-center gap-8 pt-4 sm:grid-cols-2 sm:pt-8">
+        <div className="text-center sm:text-left">
+          <h1 className="text-3xl font-bold leading-snug sm:text-4xl">
+            Claude Code を、
+            <br className="hidden sm:block" />
+            <span className="text-orange-600 dark:text-orange-400">今日から使いこなす</span>
+          </h1>
+          <p className="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-300">
+            AIコーディングエージェント「Claude Code」のインストールから、
+            実戦で使えるスキルの導入までをステップバイステップでナビゲートします。
+            ターミナルに慣れていなくても大丈夫。
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3 sm:justify-start">
+            <Link
+              href="/setup/"
+              className="rounded-xl bg-orange-600 px-6 py-3 font-bold text-white shadow-sm transition hover:bg-orange-500"
+            >
+              セットアップを始める →
+            </Link>
+            <Link
+              href="/skills/"
+              className="rounded-xl border border-zinc-300 bg-white px-6 py-3 font-bold text-zinc-700 transition hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+            >
+              スキルを見る
+            </Link>
+          </div>
         </div>
+        <Image
+          src="/hero.webp"
+          alt="ターミナルの上に光るコンパスが浮かぶイラスト"
+          width={1536}
+          height={1024}
+          priority
+          className="rounded-2xl border border-zinc-200 shadow-sm dark:border-zinc-800 dark:opacity-90"
+        />
       </section>
 
       <section className="grid gap-4 sm:grid-cols-3">
