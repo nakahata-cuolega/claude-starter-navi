@@ -4,7 +4,9 @@
 export const SKILL_CATEGORIES: Record<string, string> = {
   "new-project": "つくる",
   "gen-image": "画像",
-  "gen-banner": "画像",
+  "gen-ogp": "画像",
+  "gen-banner": "広告",
+  "ad-copy": "広告",
   analyze: "分析",
   ship: "運用",
   "screenshot-check": "運用",
@@ -13,7 +15,7 @@ export const SKILL_CATEGORIES: Record<string, string> = {
   "publish-skill": "スキル管理",
 };
 
-export const CATEGORY_ORDER = ["つくる", "画像", "分析", "運用", "スキル管理", "その他"];
+export const CATEGORY_ORDER = ["つくる", "画像", "広告", "分析", "運用", "スキル管理", "その他"];
 
 export function skillCategory(name: string): string {
   return SKILL_CATEGORIES[name] ?? "その他";
