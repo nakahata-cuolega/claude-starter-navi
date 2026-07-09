@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getSkills, REPO_URL } from "@/lib/skills";
+import { CATEGORY_ORDER, skillCategory } from "@/lib/skill-meta";
 
 export const metadata: Metadata = {
   title: "スキル一覧",
@@ -9,27 +10,38 @@ export const metadata: Metadata = {
 
 export default async function SkillsPage() {
   const skills = await getSkills();
+  const ordered = [...skills].sort((a, b) => {
+    const diff =
+      CATEGORY_ORDER.indexOf(skillCategory(a.name)) -
+      CATEGORY_ORDER.indexOf(skillCategory(b.name));
+    return diff !== 0 ? diff : a.name.localeCompare(b.name);
+  });
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">スキル一覧</h1>
-      <p className="mt-2 leading-relaxed text-zinc-600 dark:text-zinc-300">
-        <a href={REPO_URL} className="underline underline-offset-4">
+    <div className="pt-10">
+      <h1 className="font-display text-3xl font-bold">スキル一覧</h1>
+      <p className="mt-3 leading-relaxed text-stone-600 dark:text-stone-300">
+        <a href={REPO_URL} className="text-crail underline underline-offset-4 dark:text-coral">
           claude-starter リポジトリ
         </a>
         に収録されているスキルです。セットアップを終えると、Claude Code に話しかけるだけで使えます。
       </p>
-      <div className="mt-6 space-y-3">
-        {skills.map((skill) => (
+      <div className="mt-8 grid gap-3 sm:grid-cols-2">
+        {ordered.map((skill) => (
           <Link
             key={skill.name}
             href={`/skills/${skill.name}/`}
-            className="block rounded-xl border border-zinc-200 bg-white p-5 transition hover:border-orange-400 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-orange-500"
+            className="rounded-xl border border-stone-200 bg-white p-4 transition hover:border-crail/60 hover:shadow-sm dark:border-stone-800 dark:bg-stone-900 dark:hover:border-coral/60"
           >
-            <div className="font-mono text-lg font-bold text-orange-600 dark:text-orange-400">
-              /{skill.name}
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-mono text-base font-bold text-crail dark:text-coral">
+                /{skill.name}
+              </span>
+              <span className="rounded-full bg-clay-50 px-2.5 py-0.5 text-[11px] font-medium text-crail dark:bg-clay-900 dark:text-coral">
+                {skillCategory(skill.name)}
+              </span>
             </div>
-            <p className="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
+            <p className="mt-1.5 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
               {skill.description}
             </p>
           </Link>

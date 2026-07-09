@@ -28,29 +28,29 @@ export default async function SkillPage({
   const html = marked.parse(skill.body) as string;
 
   return (
-    <div>
+    <div className="pt-10">
       <Link
         href="/skills/"
-        className="text-sm text-zinc-500 underline underline-offset-4 dark:text-zinc-400"
+        className="text-sm text-stone-500 underline underline-offset-4 dark:text-stone-400"
       >
         ← スキル一覧に戻る
       </Link>
-      <h1 className="mt-4 font-mono text-3xl font-bold text-orange-600 dark:text-orange-400">
+      <h1 className="mt-4 font-mono text-3xl font-bold text-crail dark:text-coral">
         /{skill.name}
       </h1>
-      <p className="mt-3 leading-relaxed text-zinc-600 dark:text-zinc-300">
+      <p className="mt-3 leading-relaxed text-stone-600 dark:text-stone-300">
         {skill.description}
       </p>
-      <div className="mt-6 rounded-xl border border-zinc-200 bg-white p-4 text-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="mt-6 rounded-xl border border-stone-200 bg-white p-4 text-sm dark:border-stone-800 dark:bg-stone-900">
         <span className="font-bold">使い方:</span>{" "}
-        Claude Code で <code className="rounded bg-zinc-100 px-1.5 py-0.5 font-mono dark:bg-zinc-800">/{skill.name}</code>{" "}
+        Claude Code で <code className="rounded bg-clay-50 px-1.5 py-0.5 font-mono dark:bg-clay-900">/{skill.name}</code>{" "}
         と入力するか、上の説明にあるような内容を日本語で話しかけると自動で発動します。
       </div>
-      <h2 className="mt-10 mb-3 text-sm font-semibold text-zinc-500 dark:text-zinc-400">
+      <h2 className="mt-10 mb-3 text-sm font-semibold text-stone-500 dark:text-stone-400">
         スキルの中身(Claude への指示書)
       </h2>
       <article
-        className="skill-md overflow-hidden rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900"
+        className="skill-md overflow-hidden rounded-xl border border-stone-200 bg-white p-6 dark:border-stone-800 dark:bg-stone-900"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </div>
