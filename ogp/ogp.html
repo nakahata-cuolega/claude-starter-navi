@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Old+Mincho:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #141413;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(170deg, #f6e3d5 0%, #faf3e9 55%, #faf9f5 100%);
+  }
+  .blob-a, .blob-b {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+  }
+  .blob-a {
+    width: 640px; height: 640px; top: -320px; right: -140px;
+    background: radial-gradient(circle at 35% 65%, rgb(217 119 87 / 0.55), rgb(232 166 111 / 0.35) 45%, transparent 70%);
+  }
+  .blob-b {
+    width: 520px; height: 520px; bottom: -300px; left: -120px;
+    background: radial-gradient(circle at 60% 40%, rgb(193 95 60 / 0.32), rgb(242 207 174 / 0.4) 50%, transparent 72%);
+  }
+  .frame {
+    position: relative;
+    height: 100%;
+    padding: 64px 72px;
+    display: flex;
+    align-items: center;
+    gap: 56px;
+  }
+  .left { flex: 1.15; }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 24px;
+  }
+  .brand svg { width: 26px; height: 26px; color: #c15f3c; }
+  h1 {
+    margin-top: 36px;
+    font-family: "Zen Old Mincho", serif;
+    font-weight: 900;
+    font-size: 54px;
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+  }
+  h1 .accent { color: #c15f3c; white-space: nowrap; }
+  .sub {
+    margin-top: 28px;
+    font-size: 25px;
+    line-height: 1.7;
+    color: #57534e;
+  }
+  .term {
+    flex: 1;
+    max-width: 430px;
+    background: #1d1a17;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgb(193 95 60 / 0.25);
+    overflow: hidden;
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 7px;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  }
+  .term-bar i { width: 11px; height: 11px; border-radius: 50%; background: rgb(255 255 255 / 0.2); }
+  .term-bar span { margin-left: 8px; font-family: monospace; font-size: 14px; color: #a8a29e; }
+  .term-body {
+    padding: 22px 22px 26px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 17.5px;
+    line-height: 2.1;
+  }
+  .term-body .u { color: #f5f5f4; }
+  .term-body .u b { color: #d97757; font-weight: 400; margin-right: 10px; }
+  .term-body .r { color: #a8a29e; }
+  .term-body .ok { color: #4ade80; }
+  .caret {
+    display: inline-block; width: 10px; height: 22px;
+    background: #d97757; vertical-align: text-bottom; margin-left: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="blob-a"></div>
+  <div class="blob-b"></div>
+  <div class="frame">
+    <div class="left">
+      <div class="brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M15.5 8.5 13.5 13.5 8.5 15.5 10.5 10.5z" fill="currentColor" stroke="none"/>
+        </svg>
+        Claude Code スターターナビ
+      </div>
+      <h1>Claude Code を、<br><span class="accent">今日から使いこなす</span></h1>
+      <p class="sub">インストールからスキル導入まで、<br>日本語でステップバイステップにナビゲート。</p>
+    </div>
+    <div class="term">
+      <div class="term-bar"><i></i><i></i><i></i><span>claude</span></div>
+      <div class="term-body">
+        <div class="u"><b>❯</b>新しいサイトを作りたい</div>
+        <div class="r">✻ 了解です。作成します…</div>
+        <div class="ok">✓ サイトができました</div>
+        <div class="u"><b>❯</b><span class="caret"></span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
