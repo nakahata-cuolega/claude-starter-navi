@@ -8,11 +8,25 @@ import CopyButton from "@/components/CopyButton";
 const OS_KEY = "navi-os";
 const doneKey = (os: OS) => `navi-done-${os}`;
 
+function loadDone(target: OS): boolean[] {
+  try {
+    const raw = localStorage.getItem(doneKey(target));
+    const parsed = raw ? (JSON.parse(raw) as boolean[]) : [];
+    return SETUP_STEPS[target].map((_, i) => parsed[i] ?? false);
+  } catch {
+    return SETUP_STEPS[target].map(() => false);
+  }
+}
+
 export default function SetupWizard() {
   const [os, setOs] = useState<OS | null>(null);
   const [done, setDone] = useState<boolean[]>([]);
   const [loaded, setLoaded] = useState(false);
 
+  // Restore persisted progress after mount: localStorage does not exist
+  // during prerender, so this cannot be a useState initializer without
+  // causing a hydration mismatch.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     const savedOs = localStorage.getItem(OS_KEY) as OS | null;
     if (savedOs && SETUP_STEPS[savedOs]) {
@@ -21,16 +35,7 @@ export default function SetupWizard() {
     }
     setLoaded(true);
   }, []);
-
-  function loadDone(target: OS): boolean[] {
-    try {
-      const raw = localStorage.getItem(doneKey(target));
-      const parsed = raw ? (JSON.parse(raw) as boolean[]) : [];
-      return SETUP_STEPS[target].map((_, i) => parsed[i] ?? false);
-    } catch {
-      return SETUP_STEPS[target].map(() => false);
-    }
-  }
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function selectOs(target: OS) {
     setOs(target);
