@@ -42,22 +42,22 @@ const FAQS: { q: string; a: string }[] = [
 
 export default function FaqPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold">FAQ・トラブルシューティング</h1>
-      <p className="mt-2 leading-relaxed text-zinc-600 dark:text-zinc-300">
+    <div className="pt-10">
+      <h1 className="font-display text-3xl font-bold">FAQ・トラブルシューティング</h1>
+      <p className="mt-3 leading-relaxed text-stone-600 dark:text-stone-300">
         つまずきやすいポイントをまとめました。質問をクリックすると答えが開きます。
       </p>
       <div className="mt-6 space-y-3">
         {FAQS.map((faq) => (
           <details
             key={faq.q}
-            className="group rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900"
+            className="group rounded-xl border border-stone-200 bg-white dark:border-stone-800 dark:bg-stone-900"
           >
             <summary className="cursor-pointer list-none p-4 font-bold marker:hidden">
-              <span className="mr-2 text-orange-600 dark:text-orange-400">Q.</span>
+              <span className="mr-2 text-crail dark:text-coral">Q.</span>
               {faq.q}
             </summary>
-            <p className="border-t border-zinc-100 p-4 text-sm leading-relaxed text-zinc-600 dark:border-zinc-800 dark:text-zinc-300">
+            <p className="border-t border-stone-100 p-4 text-sm leading-relaxed text-stone-600 dark:border-stone-800 dark:text-stone-300">
               {faq.a}
             </p>
           </details>

@@ -14,7 +14,7 @@ export default function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={copy}
-      className="shrink-0 rounded-md border border-zinc-300 bg-white px-2.5 py-1 text-xs font-medium text-zinc-600 hover:bg-zinc-100 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700"
+      className="shrink-0 rounded-md border border-stone-500 bg-stone-800 px-2.5 py-1 text-xs font-medium text-stone-200 hover:bg-stone-700"
       aria-label="コマンドをコピー"
     >
       {copied ? "✓ コピーしました" : "コピー"}
