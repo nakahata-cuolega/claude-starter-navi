@@ -41,17 +41,20 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100 font-sans">
         <header className="sticky top-0 z-10 border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80">
-          <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-4">
-            <Link href="/" className="flex items-center gap-2 font-bold">
+          <div className="mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 px-3 sm:px-4">
+            <Link href="/" className="flex min-w-0 items-center gap-1.5 font-bold whitespace-nowrap">
               <span className="text-lg">🧭</span>
-              <span>Claude Code スターターナビ</span>
+              <span className="text-sm sm:text-base">
+                <span className="hidden sm:inline">Claude Code </span>
+                スターターナビ
+              </span>
             </Link>
-            <nav className="flex items-center gap-1 text-sm">
+            <nav className="flex shrink-0 items-center gap-0.5 text-xs sm:gap-1 sm:text-sm">
               {NAV.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-md px-3 py-1.5 text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+                  className="rounded-md px-2 py-1.5 whitespace-nowrap text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 sm:px-3 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
                 >
                   {item.label}
                 </Link>
