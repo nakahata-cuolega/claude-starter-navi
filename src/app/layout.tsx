@@ -14,13 +14,32 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL = "https://claude-starter-navi.onrender.com";
+const DESCRIPTION =
+  "Claude Codeのセットアップから、すぐ使えるスキルの導入までをステップバイステップでナビゲートします。";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Claude Code スターターナビ",
     template: "%s | Claude Code スターターナビ",
   },
-  description:
-    "Claude Codeのセットアップから、すぐ使えるスキルの導入までをステップバイステップでナビゲートします。",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "Claude Code スターターナビ",
+    description: DESCRIPTION,
+    url: SITE_URL,
+    siteName: "Claude Code スターターナビ",
+    locale: "ja_JP",
+    type: "website",
+    images: [{ url: "/ogp.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Claude Code スターターナビ",
+    description: DESCRIPTION,
+    images: ["/ogp.jpg"],
+  },
 };
 
 const NAV = [

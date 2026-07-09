@@ -52,14 +52,24 @@ export default async function Home() {
             </Link>
           </div>
         </div>
-        <Image
-          src="/hero.webp"
-          alt="ターミナルの上に光るコンパスが浮かぶイラスト"
-          width={1536}
-          height={1024}
-          priority
-          className="rounded-2xl border border-zinc-200 shadow-sm dark:border-zinc-800 dark:opacity-90"
-        />
+        <div>
+          <Image
+            src="/hero.webp"
+            alt="ターミナルの上に光るコンパスが浮かぶイラスト"
+            width={1536}
+            height={1024}
+            priority
+            className="rounded-2xl border border-zinc-200 shadow-sm dark:hidden"
+          />
+          <Image
+            src="/hero-dark.webp"
+            alt="ターミナルの上に光るコンパスが浮かぶイラスト(ダーク)"
+            width={1536}
+            height={1024}
+            priority
+            className="hidden rounded-2xl border border-zinc-800 shadow-sm dark:block"
+          />
+        </div>
       </section>
 
       <section className="grid gap-4 sm:grid-cols-3">
