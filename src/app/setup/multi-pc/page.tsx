@@ -203,6 +203,45 @@ install.ps1       # Windowsネイティブ用インストーラ`}
         <Code text={DELEGATE_PROMPT} />
       </section>
 
+      <section className="mt-10">
+        <h2 className="font-display text-xl font-bold">6. 認証まわりのチェックリスト</h2>
+        <p className="mt-2 leading-relaxed text-stone-600 dark:text-stone-300">
+          install.shがリンクを張ってくれるのは設定ファイルだけです。以下は各ツール側にログイン状態を持たせる仕組みなので、PCごとに一度だけ手動で通す必要があります。
+        </p>
+
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">GitHub CLI(git操作全般)</p>
+        <Code text={"gh auth login"} />
+        <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+          確認: <code className="rounded bg-clay-50 px-1 py-0.5 text-[0.85em] dark:bg-clay-900">gh auth status</code>
+        </p>
+
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">Codex CLI(画像生成系スキルを使う場合)</p>
+        <Code text={"codex login"} />
+        <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+          ブラウザが開くのでChatGPTアカウントでログインします。詳しくは
+          {" "}
+          <Link href="/skills/gen-image/" className="text-crail underline underline-offset-4 dark:text-coral">
+            gen-imageスキル
+          </Link>
+          のページを参照してください。
+        </p>
+
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">MCPサーバー(外部ツール連携を使う場合)</p>
+        <p className="mt-2 leading-relaxed text-stone-600 dark:text-stone-300">
+          Claude Code内で次のどちらかを実行し、案内に沿って認証します。
+        </p>
+        <Code text={"/mcp"} />
+
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">SSH鍵(git@github.com形式のリポジトリをclone/pushする場合)</p>
+        <Code
+          text={`ssh-keygen -t ed25519 -C "自分のメールアドレス"
+gh ssh-key add ~/.ssh/id_ed25519.pub --title "このPCの名前"`}
+        />
+        <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+          確認: <code className="rounded bg-clay-50 px-1 py-0.5 text-[0.85em] dark:bg-clay-900">ssh -T git@github.com</code> で認証成功のメッセージが出ればOKです。
+        </p>
+      </section>
+
       <div className="mt-10 rounded-xl border border-amber-200 bg-amber-50 p-5 dark:border-amber-900 dark:bg-amber-950/40">
         <div className="font-bold text-amber-900 dark:text-amber-200">💡 忘れやすいポイント</div>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-amber-800 dark:text-amber-200">
@@ -224,7 +263,12 @@ install.ps1       # Windowsネイティブ用インストーラ`}
           <Link href="/skills/" className="text-crail underline underline-offset-4 dark:text-coral">
             スキル一覧
           </Link>
-          へ。
+          へ。<code className="rounded bg-clay-50 px-1 py-0.5 text-[0.85em] dark:bg-clay-900">agents/</code> フォルダに置く役割ごとのカスタムエージェントの作り方は
+          {" "}
+          <Link href="/setup/custom-agents/" className="text-crail underline underline-offset-4 dark:text-coral">
+            こちら
+          </Link>
+          。
         </p>
       </div>
     </div>

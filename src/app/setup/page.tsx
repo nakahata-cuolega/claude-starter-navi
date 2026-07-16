@@ -43,17 +43,31 @@ export default function SetupPage() {
 
       <SetupWizard />
 
-      <div className="mt-10 rounded-xl border border-dashed border-stone-300 p-5 dark:border-stone-700">
-        <div className="font-bold">応用: 複数のPCで同じ環境を使いたい場合</div>
-        <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
-          設定・スキル・長期メモリをGitリポジトリで管理して、他のMac/Windowsでも同じ環境をワンコマンドで再現する方法です。
-        </p>
-        <Link
-          href="/setup/multi-pc/"
-          className="mt-3 inline-block text-sm font-medium text-crail underline underline-offset-4 dark:text-coral"
-        >
-          読む →
-        </Link>
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        <div className="rounded-xl border border-dashed border-stone-300 p-5 dark:border-stone-700">
+          <div className="font-bold">応用: 複数のPCで同じ環境を使いたい場合</div>
+          <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+            設定・スキル・長期メモリをGitリポジトリで管理して、他のMac/Windowsでも同じ環境をワンコマンドで再現する方法です。
+          </p>
+          <Link
+            href="/setup/multi-pc/"
+            className="mt-3 inline-block text-sm font-medium text-crail underline underline-offset-4 dark:text-coral"
+          >
+            読む →
+          </Link>
+        </div>
+        <div className="rounded-xl border border-dashed border-stone-300 p-5 dark:border-stone-700">
+          <div className="font-bold">応用: 役割ごとのカスタムエージェントを作りたい場合</div>
+          <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+            調べ物・下書き・レビューなど、役割ごとに専用のエージェントを用意して委譲する方法です。
+          </p>
+          <Link
+            href="/setup/custom-agents/"
+            className="mt-3 inline-block text-sm font-medium text-crail underline underline-offset-4 dark:text-coral"
+          >
+            読む →
+          </Link>
+        </div>
       </div>
     </div>
   );
