@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SetupWizard from "@/components/SetupWizard";
 
 export const metadata: Metadata = {
@@ -41,6 +42,19 @@ export default function SetupPage() {
       </ol>
 
       <SetupWizard />
+
+      <div className="mt-10 rounded-xl border border-dashed border-stone-300 p-5 dark:border-stone-700">
+        <div className="font-bold">応用: 複数のPCで同じ環境を使いたい場合</div>
+        <p className="mt-1 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+          設定・スキル・長期メモリをGitリポジトリで管理して、他のMac/Windowsでも同じ環境をワンコマンドで再現する方法です。
+        </p>
+        <Link
+          href="/setup/multi-pc/"
+          className="mt-3 inline-block text-sm font-medium text-crail underline underline-offset-4 dark:text-coral"
+        >
+          読む →
+        </Link>
+      </div>
     </div>
   );
 }
