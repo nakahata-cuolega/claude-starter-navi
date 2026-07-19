@@ -47,7 +47,9 @@ link skills
 link agents
 
 # Memory lives under a home-path-encoded folder name, so compute it here.
-HOME_PROJECT_DIR="$CLAUDE_DIR/projects/$(echo "$HOME" | tr '/.' '--')"
+# Any non-alphanumeric char (including "_", common in usernames) becomes "-",
+# matching how Claude Code itself encodes the path.
+HOME_PROJECT_DIR="$CLAUDE_DIR/projects/$(echo "$HOME" | sed -E 's/[^A-Za-z0-9]/-/g')"
 MEMORY_DST="$HOME_PROJECT_DIR/memory"
 mkdir -p "$REPO_DIR/claude/memory/home" "$HOME_PROJECT_DIR"
 if [ -e "$MEMORY_DST" ] && [ ! -L "$MEMORY_DST" ]; then
@@ -60,33 +62,88 @@ echo "linked $MEMORY_DST -> $REPO_DIR/claude/memory/home"
 echo "Done. New Claude Code sessions will pick up this config."`;
 
 const INSTALL_PS1 = `# claude-env installer for Windows (PowerShell)
-# Requires: Developer Mode ON (Settings > System > For developers)
+# Prefers symlinks (needs Developer Mode or Administrator). If those aren't
+# available (or Developer Mode doesn't take effect without a re-login), it
+# falls back to hard links (files) / NTFS junctions (dirs), which work for
+# any standard user account on the same volume, no elevation required.
 $ErrorActionPreference = "Stop"
 
 $RepoDir = $PSScriptRoot
 $ClaudeDir = Join-Path $HOME ".claude"
+$BackupDir = Join-Path $ClaudeDir ("pre-claude-env-backup-" + (Get-Date -Format "yyyyMMddHHmmss"))
 
-function Link-Item($name) {
+New-Item -ItemType Directory -Force -Path $ClaudeDir | Out-Null
+
+function Link-Item($name, [switch]$IsDir) {
     $src = Join-Path $RepoDir "claude\\$name"
     $dst = Join-Path $ClaudeDir $name
-    if (Test-Path $dst) { Remove-Item $dst -Force -Recurse:$false }
-    New-Item -ItemType SymbolicLink -Path $dst -Target $src | Out-Null
-    Write-Host "linked $dst -> $src"
+
+    $existing = Get-Item $dst -ErrorAction SilentlyContinue
+    if ($existing) {
+        if ($existing.LinkType) {
+            # Remove-Item can throw on some reparse points; delete via .NET instead.
+            if ($existing.PSIsContainer) { [System.IO.Directory]::Delete($dst, $false) }
+            else { [System.IO.File]::Delete($dst) }
+        } else {
+            New-Item -ItemType Directory -Force -Path $BackupDir | Out-Null
+            Move-Item $dst $BackupDir
+            Write-Host "backed up existing $dst -> $BackupDir"
+        }
+    }
+
+    try {
+        New-Item -ItemType SymbolicLink -Path $dst -Target $src | Out-Null
+        Write-Host "linked (symlink) $dst -> $src"
+        return
+    } catch { }
+
+    try {
+        if ($IsDir) { New-Item -ItemType Junction -Path $dst -Target $src | Out-Null }
+        else { New-Item -ItemType HardLink -Path $dst -Target $src | Out-Null }
+        Write-Host "linked (fallback) $dst -> $src"
+    } catch {
+        Write-Host "ERROR: Could not link '$name'. Enable Developer Mode or run as Administrator." -ForegroundColor Red
+        exit 1
+    }
 }
 
 Link-Item "CLAUDE.md"
 Link-Item "settings.json"
-Link-Item "skills"
-Link-Item "agents"
+Link-Item "skills" -IsDir
+Link-Item "agents" -IsDir
 
 # Memory lives under a home-path-encoded folder name, so compute it here.
-$HomeProjectName = $HOME -replace '[:\\\\/.]', '-'
+# Any non-alphanumeric char (including "_", common in usernames) becomes "-".
+$HomeProjectName = $HOME -replace '[^A-Za-z0-9]', '-'
 $MemoryDst = Join-Path $ClaudeDir "projects\\$HomeProjectName\\memory"
 $MemorySrc = Join-Path $RepoDir "claude\\memory\\home"
 New-Item -ItemType Directory -Force -Path $MemorySrc, (Split-Path $MemoryDst) | Out-Null
-if (Test-Path $MemoryDst) { Remove-Item $MemoryDst -Force -Recurse:$false }
-New-Item -ItemType SymbolicLink -Path $MemoryDst -Target $MemorySrc | Out-Null
-Write-Host "linked $MemoryDst -> $MemorySrc"`;
+$existingMemory = Get-Item $MemoryDst -ErrorAction SilentlyContinue
+if ($existingMemory) {
+    if ($existingMemory.LinkType) {
+        if ($existingMemory.PSIsContainer) { [System.IO.Directory]::Delete($MemoryDst, $false) }
+        else { [System.IO.File]::Delete($MemoryDst) }
+    } else {
+        New-Item -ItemType Directory -Force -Path $BackupDir | Out-Null
+        Move-Item $MemoryDst (Join-Path $BackupDir "memory")
+    }
+}
+try {
+    New-Item -ItemType SymbolicLink -Path $MemoryDst -Target $MemorySrc | Out-Null
+    Write-Host "linked (symlink) $MemoryDst -> $MemorySrc"
+} catch {
+    New-Item -ItemType Junction -Path $MemoryDst -Target $MemorySrc | Out-Null
+    Write-Host "linked (fallback) $MemoryDst -> $MemorySrc"
+}`;
+
+const INSTALL_GH_MAC = `brew install gh`;
+const INSTALL_GH_WIN = `winget install Git.Git GitHub.cli`;
+const INSTALL_GH_WSL = `(type -p wget >/dev/null || (sudo apt update && sudo apt install wget -y)) \\
+  && sudo mkdir -p -m 755 /etc/apt/keyrings \\
+  && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \\
+  && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \\
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \\
+  && sudo apt update && sudo apt install gh -y`;
 
 const GITIGNORE = `.DS_Store
 *.local.json
@@ -164,7 +221,9 @@ install.ps1       # Windowsネイティブ用インストーラ`}
         <Code text={INSTALL_SH} />
         <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">Windowsネイティブ用(install.ps1)</p>
         <p className="mt-2 leading-relaxed text-stone-600 dark:text-stone-300">
-          事前に「設定 &gt; システム &gt; 開発者向け &gt; 開発者モード」を<strong>オン</strong>にしてください(シンボリックリンク作成に必要)。
+          シンボリックリンクの作成には「設定 &gt; システム &gt; 開発者向け &gt; 開発者モード」が必要ですが、
+          このスクリプトはオフのままでも動きます。作成できない場合は自動でハードリンク/ジャンクションに切り替わるので、
+          開発者モードを事前にオンにする必要はありません。
         </p>
         <Code text={INSTALL_PS1} />
       </section>
@@ -186,12 +245,28 @@ install.ps1       # Windowsネイティブ用インストーラ`}
           <Link href="/setup/" className="text-crail underline underline-offset-4 dark:text-coral">
             セットアップ
           </Link>
-          でNode.jsとClaude Codeを入れたあと、GitHub CLIでリポジトリを取得してインストーラを実行するだけです。
+          でNode.jsとClaude Codeを入れたあと、GitHub CLIでリポジトリを取得してインストーラを実行します。
+          <strong>セットアップ手順ではGitHub CLI(gh)を入れていない</strong>ので、無ければ先にインストールしてください
+          (<code className="rounded bg-clay-50 px-1 py-0.5 text-[0.85em] dark:bg-clay-900">gh --version</code> で確認できます)。
         </p>
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">GitHub CLIが無い場合(macOS)</p>
+        <Code text={INSTALL_GH_MAC} />
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">GitHub CLIが無い場合(Windowsネイティブ)</p>
+        <Code text={INSTALL_GH_WIN} />
+        <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+          インストール直後は同じPowerShellウィンドウのままだと認識されないことがあります。一度閉じて開き直してください。
+        </p>
+        <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">GitHub CLIが無い場合(WSL)</p>
+        <Code text={INSTALL_GH_WSL} />
         <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">macOS / Linux / WSL</p>
         <Code text={CLONE_MAC} />
         <p className="mt-4 text-sm font-semibold text-stone-500 dark:text-stone-400">Windowsネイティブ(PowerShell)</p>
         <Code text={CLONE_WIN} />
+        <p className="mt-2 text-sm leading-relaxed text-stone-600 dark:text-stone-300">
+          <code className="rounded bg-clay-50 px-1 py-0.5 text-[0.85em] dark:bg-clay-900">gh repo create</code> で新規作成しようとして
+          「Name already exists on this account」と出た場合は、既に他のPCで作成済みという意味です。新規作成ではなく
+          上記の <code className="rounded bg-clay-50 px-1 py-0.5 text-[0.85em] dark:bg-clay-900">gh repo clone</code> を使ってください。
+        </p>
       </section>
 
       <section className="mt-10">
